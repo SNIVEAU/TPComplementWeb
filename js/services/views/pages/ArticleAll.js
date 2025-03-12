@@ -7,7 +7,7 @@ export default class ArticleAll {
         <h2> Les articles </h2>
         <ul>
         ${articles.map(article =>`
-            <li>${article.title}</li>`).join('')}
+            <li><a href="#/articles/${article.id}">${article.title}</a></li>`).join('')}
         </ul>
         `;
         return view;
