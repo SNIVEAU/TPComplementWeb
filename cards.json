@@ -1,4 +1,5 @@
-[
+{
+    "cards":    [
     {
         "name": "Beerus",
         "title": "Chaos Brought by the God of Destruction",
@@ -47845,4 +47846,5 @@
         "kiMultiplier": "12 Ki Multiplier is 140%; ",
         "transformations": []
     }
-]
+    ]
+}

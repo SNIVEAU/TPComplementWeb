@@ -1,12 +1,12 @@
 import About from "./services/views/pages/About.js";
 import Utils from "./services/utils.js";
-import ArticleAll from "./services/views/pages/ArticleAll.js";
-import ArticleDetail from "./services/views/pages/ArticleDetail.js";
+import CardsAll from "./services/views/pages/CardsAll.js";
+import CardDetail from "./services/views/pages/CardsDetail.js";
 const routes = {
     '/': About,
     '/about': About,
-    '/articles': ArticleAll,
-    '/articles/:id': ArticleDetail
+    '/cards': CardsAll,
+    '/cards/:id': CardDetail
 };
 
 const router = async () => {

@@ -1,7 +1,7 @@
 import {ENDPOINT} from '../config.js'
 
-export default class ArticleProvider{
-    static fetchArticles = async (limit =10)=>{
+export default class CardsProvider {
+    static fetchCards = async (limit =10)=>{
         const options = {
             method : 'GET',
             headers : {
@@ -16,7 +16,7 @@ export default class ArticleProvider{
             console.log("Il y a eu une erreur")
         }
     }
-    static getArticle = async (id) => {
+    static getCards = async (id) => {
         const options = {
             method: 'GET',
             headers: {
