@@ -2,6 +2,7 @@ import About from "./services/views/pages/About.js";
 import Utils from "./services/utils.js";
 import CardsAll from "./services/views/pages/CardsAll.js";
 import CardDetail from "./services/views/pages/CardsDetail.js";
+import addFavoris from "./services/AddFavoris.js";
 const routes = {
     '/': About,
     '/about': About,
