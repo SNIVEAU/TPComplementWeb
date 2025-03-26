@@ -1,10 +1,11 @@
 import CardsProvider from "../../CardsProvider.js";
+import addFavoris from "../../AddFavoris.js";
 
 export default class DetailCard {
     constructor() {
         this.id = null;
     }
-
+    
     static async render(request) {
         const id = request.id;
         let card = await CardsProvider.getCard(id);
@@ -73,6 +74,14 @@ export default class DetailCard {
                 </div>
             </div>
         </div>
-        `;
+            </div>
+            <div class="favoris">
+            <button id="favorisBtn">Ajouter aux favoris</button>
+            </div>
+                    `;
+
+        
+
+        
     }
 }
