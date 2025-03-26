@@ -10,6 +10,14 @@ export default class DetailCard {
         const id = request.id;
         let card = await CardsProvider.getCard(id);
         console.log(card);
+        // le setimeout permet d'attendre que le dom soit généré avant d'ajouter la fonction
+        // ce qui évite les erreurs
+        setTimeout(() => { 
+            const btn = document.getElementById("favorisBtn");
+            if (btn) {
+                btn.addEventListener("click", () => addFavoris(card));
+            }
+        }, 0);
         let defaultImage = "https://static.wikia.nocookie.net/dbz-dokkanbattle/images/5/51/Card_3000270_thumb.png";
 
         return `

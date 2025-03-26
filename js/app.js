@@ -3,11 +3,13 @@ import Utils from "./services/utils.js";
 import CardsAll from "./services/views/pages/CardsAll.js";
 import CardDetail from "./services/views/pages/CardsDetail.js";
 import addFavoris from "./services/AddFavoris.js";
+import FavoriCardAll from "./services/views/pages/FavoriCardAll.js";
 const routes = {
     '/': About,
     '/about': About,
     '/cards': CardsAll,
-    '/cards/:id': CardDetail
+    '/cards/:id': CardDetail,
+    '/favoris': FavoriCardAll
 };
 
 const router = async () => {

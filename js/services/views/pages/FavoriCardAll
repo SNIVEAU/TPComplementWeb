@@ -1,6 +1,0 @@
-export default class FavoriCardAll{
-    static async render(){
-        let cards = localStorage.getItem("favoris")
-        console.log(cards);
-    }
-}
