@@ -8,7 +8,7 @@ export default class CardsAll {
         <h2> Les Cartes </h2>
         <ul>
         ${card.map(card =>`
-            <img src="${card.imageURL}" alt="${card.name}">
+            <img src="${card.imageURL}" alt="${card.name}" loading="lazy">
             <li><a href="#/cards/${card.id}">${card.name}</a></li>`).join('')}
         </ul>
         `;
