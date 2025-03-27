@@ -70,6 +70,7 @@ export default class Equipe {
                 e.dataTransfer.setData('card-id', card.dataset.cardId);
                 e.dataTransfer.setData('card-name', card.dataset.cardName);
                 e.dataTransfer.setData('card-img', card.dataset.cardImg);
+                e.dataTransfer.setData('card-cost', card.dataset.cardCost);
             });
         });
 

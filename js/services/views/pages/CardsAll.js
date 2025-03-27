@@ -3,40 +3,38 @@ import CardsProvider from "../../CardsProvider.js";
 export default class CardsAll {
     static async render() {
         let cards = await CardsProvider.fetchCards(20);
-        console.log(cards);
         let defaultImage = "https://static.wikia.nocookie.net/dbz-dokkanbattle/images/5/51/Card_3000270_thumb.png";
 
-        // Définition des couleurs pour chaque type
+        // Définir les couleurs par type
         const typeColors = {
-            "INT": "bg-purple text-white",
-            "STR": "bg-danger text-white",
-            "PHY": "bg-warning text-dark",
-            "AGL": "bg-primary text-white",
-            "TEQ": "bg-success text-white"
+            'AGI': 'bg-primary text-white',
+            'TEQ': 'bg-success text-white',
+            'INT': 'bg-purple text-white',
+            'STR': 'bg-danger text-white',
+            'PHY': 'bg-warning text-dark'
         };
 
-        // Trier les cartes par type
-        let groupedCards = {};
+        // Grouper les cartes par type
+        const groupedCards = {};
         cards.forEach(card => {
-            let type = card.type || "AUTRE";
-            if (!groupedCards[type]) {
-                groupedCards[type] = [];
+            if (!groupedCards[card.type]) {
+                groupedCards[card.type] = [];
             }
-            groupedCards[type].push(card);
+            groupedCards[card.type].push(card);
         });
 
-        // Construire l'affichage des cartes
+        // Construire l'affichage
         let view = `<div class="container my-5">
             <h2 class="mb-4 text-center">Les Cartes Classées par Type</h2>`;
 
         Object.keys(groupedCards).forEach(type => {
-            let bgClass = typeColors[type] || "bg-secondary text-white"; // Par défaut gris
+            let bgClass = typeColors[type] || "bg-secondary text-white";
             view += `
             <div class="mb-5">
                 <h3 class="p-3 ${bgClass} text-center rounded">${type}</h3>
                 <div class="row">
                     ${groupedCards[type].map(card => {
-                        let imageUrl = card.imageURL ? card.imageURL : defaultImage;
+                        let imageUrl = card.imageURL || defaultImage;
                         return `
                             <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                                 <div class="card h-100 shadow-sm border-0">
@@ -59,7 +57,6 @@ export default class CardsAll {
         });
 
         view += `</div>`;
-        console.log(view);
         return view;
     }
 }
