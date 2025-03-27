@@ -12,7 +12,7 @@ export default class EquipeProvider {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const json = await response.json();
-            return json.map(data => new Personnage(data));
+            return json.map(data => new Equipe(data));
         } catch (error) {
             console.error("Il y a eu une erreur lors de la récupération des cartes:", error);
             return [];
