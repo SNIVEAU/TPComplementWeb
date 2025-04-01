@@ -1,6 +1,7 @@
 import CardsProvider from '../../../services/CardsProvider.js';
 import Utils from '../../../services/utils.js';
 import addFavoris from '../../../services/AddFavoris.js';
+import EquipeProvider from '../../../services/EquipeProvider.js';
 
 
 export default class Equipe {
@@ -77,16 +78,20 @@ export default class Equipe {
         window.dropCard = function (event) {
             event.preventDefault();
             const slot = event.currentTarget;
-
+        
             if (slot.querySelector('img')) return;
-
+        
             const cardName = event.dataTransfer.getData('card-name');
             const cardImg = event.dataTransfer.getData('card-img');
-
+            const cardId = event.dataTransfer.getData('card-id');
+        
+            slot.dataset.cardId = cardId; // ← on stocke l’id de la carte dans le slot
+        
             slot.innerHTML = `
                 <img src="${cardImg}" alt="${cardName}" class="img-fluid rounded" style="max-width: 100%; max-height: 100%;">
             `;
         };
+        
 
         // Permet de raffraichir la page lorsqu'on clique sur le bouton "Réinitialiser"
         document.getElementById('resetButton').addEventListener('click', () => {
@@ -95,7 +100,19 @@ export default class Equipe {
 
         // Permet d'ajouter une équipe dans mes équipe
         document.getElementById('saveEquipe').addEventListener('click', () => {
+            let listeCard = [];
+            const slots = document.querySelectorAll('.slot');
             
-        }); 
+            slots.forEach(slot => {
+                const img = slot.querySelector('img');
+                if (img) {
+                    // On récupère l'ID stocké dans le slot
+                    const cardId = slot.dataset.cardId;
+                    if (cardId) listeCard.push(cardId);
+                }
+            }); 
+            EquipeProvider.createTeam(listeCard);
+        });
+        
     }
 }
