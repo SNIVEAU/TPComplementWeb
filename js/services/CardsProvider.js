@@ -1,19 +1,22 @@
-import {ENDPOINT} from '../config.js'
+import { ENDPOINT } from '../config.js';
 import Personnage from '../models/Personnage.js';
 
 export default class CardsProvider {
-    static fetchCards = async (limit = 10) => {
+    static fetchCards = async (limit = 10, page = 1) => {
         const options = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         };
+
         try {
-            const response = await fetch(`${ENDPOINT}?limit=${limit}`, options);
+            const response = await fetch(`${ENDPOINT}?_limit=${limit}&_page=${page}`, options);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            const totalCount = response.headers.get('X-Total-Count'); // Optionnel, utile si tu veux savoir combien de pages
             const json = await response.json();
             return json.map(data => new Personnage(data));
         } catch (error) {

@@ -43,9 +43,7 @@ export default class Equipe {
                                 ${[1, 2, 3, 4, 5, 6].map(i => `
                                     <div class="slot border border-secondary rounded d-flex align-items-center justify-content-center" 
                                         data-slot-index="${i - 1}"
-                                        style="width: 80px; height: 80px; background-color: #f8f9fa;"
-                                        ondragover="event.preventDefault()"
-                                        ondrop="window.dropCard(event)">
+                                        style="width: 80px; height: 80px; background-color: #f8f9fa;">
                                         <span class="text-muted">Slot ${i}</span>
                                     </div>
                                 `).join('')}
@@ -61,49 +59,83 @@ export default class Equipe {
     }
 
     static async after_render() {
-        const cards = document.querySelectorAll('.draggable-card');
-        cards.forEach(card => {
-            card.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('card-id', card.dataset.cardId);
-                e.dataTransfer.setData('card-name', card.dataset.cardName);
-                e.dataTransfer.setData('card-img', card.dataset.cardImg);
+        console.log("after_render appelé !");
+        console.log("Cartes trouvées :", document.querySelectorAll('.draggable-card').length);
+        console.log("Slots trouvés :", document.querySelectorAll('.slot').length);
+
+        // Attendre que le DOM soit complètement chargé
+        setTimeout(() => {
+            // Drag des cartes
+            const cards = document.querySelectorAll('.draggable-card');
+            console.log('Cartes trouvées:', cards.length);
+            
+            cards.forEach(card => {
+                card.addEventListener('dragstart', (e) => {
+                    console.log('Drag start:', card.dataset.cardId);
+                    e.dataTransfer.setData('text/plain', ''); // Nécessaire pour Firefox
+                    e.dataTransfer.setData('card-id', card.dataset.cardId);
+                    e.dataTransfer.setData('card-name', card.dataset.cardName);
+                    e.dataTransfer.setData('card-img', card.dataset.cardImg);
+                });
             });
-        });
-
-        window.dropCard = function (event) {
-            event.preventDefault();
-            const slot = event.currentTarget;
-
-            if (slot.querySelector('img')) return;
-
-            const cardName = event.dataTransfer.getData('card-name');
-            const cardImg = event.dataTransfer.getData('card-img');
-            const cardId = event.dataTransfer.getData('card-id');
-
-            slot.dataset.cardId = cardId;
-
-            slot.innerHTML = `
-                <img src="${cardImg}" alt="${cardName}" class="img-fluid rounded" style="max-width: 100%; max-height: 100%;">
-            `;
-        };
-
-        document.getElementById('resetButton').addEventListener('click', () => {
-            window.location.reload();
-        });
-
-        document.getElementById('saveEquipe').addEventListener('click', () => {
-            let listeCard = [];
+    
+            // Drop dans les slots
             const slots = document.querySelectorAll('.slot');
-
+            console.log('Slots trouvés:', slots.length);
+            
             slots.forEach(slot => {
-                const img = slot.querySelector('img');
-                if (img) {
-                    const cardId = slot.dataset.cardId;
-                    if (cardId) listeCard.push(cardId);
-                }
+                slot.addEventListener('dragover', event => {
+                    event.preventDefault();
+                    slot.classList.add('drag-over');
+                });
+                
+                slot.addEventListener('dragleave', event => {
+                    slot.classList.remove('drag-over');
+                });
+    
+                slot.addEventListener('drop', event => {
+                    event.preventDefault();
+                    slot.classList.remove('drag-over');
+                    
+                    if (slot.querySelector('img')) return;
+    
+                    const cardId = event.dataTransfer.getData('card-id');
+                    const cardName = event.dataTransfer.getData('card-name');
+                    const cardImg = event.dataTransfer.getData('card-img');
+                    
+                    console.log('Drop card:', cardId, cardName);
+    
+                    slot.dataset.cardId = cardId;
+    
+                    slot.innerHTML = `
+                        <img src="${cardImg}" alt="${cardName}" class="img-fluid rounded" style="max-width: 100%; max-height: 100%;">
+                    `;
+                });
             });
+    
+            // Bouton de réinitialisation
+            document.getElementById('resetButton').addEventListener('click', () => {
+                window.location.reload();
+            });
+    
+            // Bouton d'enregistrement d'équipe
+            document.getElementById('saveEquipe').addEventListener('click', () => {
+                let listeCard = [];
+                const slots = document.querySelectorAll('.slot');
+    
+                slots.forEach(slot => {
+                    const img = slot.querySelector('img');
+                    if (img) {
+                        const cardId = slot.dataset.cardId;
+                        if (cardId) listeCard.push(cardId);
+                    }
+                });
+    
+                EquipeProvider.createTeam(listeCard);
 
-            EquipeProvider.createTeam(listeCard);
-        });
+                alert("Équipe enregistrée !");
+                
+            });
+        }, 100); // Petit délai pour s'assurer que le DOM est prêt
     }
 }

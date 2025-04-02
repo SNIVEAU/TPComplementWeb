@@ -1,9 +1,13 @@
 import CardsProvider from "../../CardsProvider.js";
+import Utils from "../../utils.js"; // ← pour lire l'URL (on le suppose ici)
 
 export default class CardsAll {
-    static async render() {
-        let cards = await CardsProvider.fetchCards(20);
-        let defaultImage = "https://static.wikia.nocookie.net/dbz-dokkanbattle/images/5/51/Card_3000270_thumb.png";
+    static async render(request) {
+        const limit = 20;
+        const currentPage = parseInt(request?.query?.page || "1");
+
+        const cards = await CardsProvider.fetchCards(limit, currentPage);
+        const defaultImage = "https://static.wikia.nocookie.net/dbz-dokkanbattle/images/5/51/Card_3000270_thumb.png";
 
         const typeColors = {
             "INT": "bg-purple text-white",
@@ -27,7 +31,7 @@ export default class CardsAll {
                 <input type="text" id="searchInput" class="form-control" placeholder="Rechercher une carte...">
             </div>
         `;
-        
+
         Object.keys(groupedCards).forEach(type => {
             let bgClass = typeColors[type] || "bg-secondary text-white";
             view += `
@@ -56,22 +60,39 @@ export default class CardsAll {
 
             view += `</div></div>`;
         });
-        
-        view += `</div>`;
 
+        // Pagination
+        view += `
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <button class="btn btn-outline-primary" id="prevPage" ${currentPage <= 1 ? "disabled" : ""}>Page précédente</button>
+                <span class="fw-bold">Page ${currentPage}</span>
+                <button class="btn btn-outline-primary" id="nextPage">Page suivante</button>
+            </div>
+        `;
+
+        view += `</div>`; // Fin du container
+
+        // Event bindings
         setTimeout(() => {
             document.getElementById("searchInput").addEventListener("keyup", function () {
-                let input = this.value.toLowerCase();
-                let cards = document.querySelectorAll(".card-item");
-                
+                const input = this.value.toLowerCase();
+                const cards = document.querySelectorAll(".card-item");
+
                 cards.forEach(card => {
-                    let name = card.getAttribute("data-name");
-                    if (name.includes(input)) {
-                        card.style.display = "block";
-                    } else {
-                        card.style.display = "none";
-                    }
+                    const name = card.getAttribute("data-name");
+                    card.style.display = name.includes(input) ? "block" : "none";
                 });
+            });
+
+            // Gestion pagination
+            document.getElementById("prevPage")?.addEventListener("click", () => {
+                if (currentPage > 1) {
+                    window.location.hash = `#/cards?page=${currentPage - 1}`;
+                }
+            });
+
+            document.getElementById("nextPage")?.addEventListener("click", () => {
+                window.location.hash = `#/cards?page=${currentPage + 1}`;
             });
         }, 0);
 
