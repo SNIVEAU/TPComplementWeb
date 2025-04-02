@@ -5,13 +5,15 @@ import CardDetail from "./services/views/pages/CardsDetail.js";
 import addFavoris from "./services/AddFavoris.js";
 import FavoriCardAll from "./services/views/pages/FavoriCardAll.js";
 import Equipe from "./services/views/pages/Equipe.js";
+import MesEquipe from "./services/views/pages/MesEquipe.js";
 const routes = {
     '/': About,
     '/about': About,
     '/cards': CardsAll,
     '/cards/:id': CardDetail,
     '/favoris': FavoriCardAll,
-    '/equipe': Equipe
+    '/equipe': MesEquipe,
+    '/equipecreate': Equipe,
 };
 
 const router = async () => {
@@ -33,3 +35,6 @@ const page = async () => {
 
 window.addEventListener('load', router);
 window.addEventListener('hashchange', router);
+
+
+

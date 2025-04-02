@@ -1,6 +1,7 @@
 export default class Equipe {
-    constructor(listpersonnage) {
-        this.listpersonnage = this.listpersonnage;
+    constructor(id,listpersonnage) {
+        this.id = id;
+        this.listpersonnage = listpersonnage;   
     }
     addPersonnage(personnage) {
         this.listpersonnage.push(personnage);

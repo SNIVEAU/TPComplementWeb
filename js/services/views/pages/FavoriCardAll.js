@@ -38,6 +38,5 @@ export default class FavoriCardAll{
                 <p class="text-center">Aucune carte en favoris pour le moment.</p>
             </div>`;
         }
-        return
     }
 }
