@@ -18,15 +18,18 @@ const routes = {
 
 const router = async () => {
     const content = document.querySelector("#contenu");
-    let request = Utils.parseRequestURL();
-    let parsedURL = `/${request.resource || ''}${request.id ? '/:id' : ''}${request.verb ? '/' + request.verb : ''}`;
+    const request = Utils.parseRequestURL();
+    const parsedURL = `/${request.resource || ''}${request.id ? '/:id' : ''}${request.verb ? '/' + request.verb : ''}`;
 
-    console.log("Request URL:", request);
-    console.log("Parsed URL:", parsedURL);
-    let page = routes[parsedURL] || (request.resource === "articles" && request.id ? ArticleDetail : Error404);
+    let page = routes[parsedURL] || Error404;
 
-    content.innerHTML = await page.render(request);
+    content.innerHTML = await page.render(request); // ← request doit être transmis ici !
+
+    if (page.after_render) {
+        await page.after_render(request);
+    }
 };
+
 
 const page = async () => {
     const content = document.querySelector("#contenu");
