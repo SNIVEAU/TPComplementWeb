@@ -96,6 +96,9 @@ export default class CardsAll {
             });
         }, 0);
 
+
+        console.log("CardsAll appelée avec page :", request?.query?.page);
+
         return view;
     }
 }

@@ -10,8 +10,9 @@ export default class CardsProvider {
             }
         };
 
+        console.log("fetchCards appelée avec page :", page);
         try {
-            const response = await fetch(`${ENDPOINT}?_limit=${limit}&_page=${page}`, options);
+            const response = await fetch(`${ENDPOINT}?_sort=id&_order=asc&_limit=${limit}&_page=${page}`, options);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
