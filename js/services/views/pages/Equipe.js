@@ -63,66 +63,54 @@ export default class Equipe {
         console.log("Cartes trouvées :", document.querySelectorAll('.draggable-card').length);
         console.log("Slots trouvés :", document.querySelectorAll('.slot').length);
 
-        // Attendre que le DOM soit complètement chargé
         setTimeout(() => {
-            // Drag des cartes
             const cards = document.querySelectorAll('.draggable-card');
-            console.log('Cartes trouvées:', cards.length);
-            
             cards.forEach(card => {
                 card.addEventListener('dragstart', (e) => {
-                    console.log('Drag start:', card.dataset.cardId);
-                    e.dataTransfer.setData('text/plain', ''); // Nécessaire pour Firefox
+                    e.dataTransfer.setData('text/plain', '');
                     e.dataTransfer.setData('card-id', card.dataset.cardId);
                     e.dataTransfer.setData('card-name', card.dataset.cardName);
                     e.dataTransfer.setData('card-img', card.dataset.cardImg);
                 });
             });
-    
-            // Drop dans les slots
+
             const slots = document.querySelectorAll('.slot');
-            console.log('Slots trouvés:', slots.length);
-            
             slots.forEach(slot => {
                 slot.addEventListener('dragover', event => {
                     event.preventDefault();
                     slot.classList.add('drag-over');
                 });
-                
-                slot.addEventListener('dragleave', event => {
+
+                slot.addEventListener('dragleave', () => {
                     slot.classList.remove('drag-over');
                 });
-    
+
                 slot.addEventListener('drop', event => {
                     event.preventDefault();
                     slot.classList.remove('drag-over');
-                    
+
                     if (slot.querySelector('img')) return;
-    
+
                     const cardId = event.dataTransfer.getData('card-id');
                     const cardName = event.dataTransfer.getData('card-name');
                     const cardImg = event.dataTransfer.getData('card-img');
-                    
-                    console.log('Drop card:', cardId, cardName);
-    
+
                     slot.dataset.cardId = cardId;
-    
+
                     slot.innerHTML = `
                         <img src="${cardImg}" alt="${cardName}" class="img-fluid rounded" style="max-width: 100%; max-height: 100%;">
                     `;
                 });
             });
-    
-            // Bouton de réinitialisation
+
             document.getElementById('resetButton').addEventListener('click', () => {
                 window.location.reload();
             });
-    
-            // Bouton d'enregistrement d'équipe
-            document.getElementById('saveEquipe').addEventListener('click', () => {
+
+            document.getElementById('saveEquipe').addEventListener('click', async () => {
                 let listeCard = [];
                 const slots = document.querySelectorAll('.slot');
-    
+
                 slots.forEach(slot => {
                     const img = slot.querySelector('img');
                     if (img) {
@@ -130,12 +118,19 @@ export default class Equipe {
                         if (cardId) listeCard.push(cardId);
                     }
                 });
-    
-                EquipeProvider.createTeam(listeCard);
 
-                alert("Équipe enregistrée !");
-                
+                if (listeCard.length !== 6) {
+                    alert("Il faut 6 cartes pour enregistrer une équipe !");
+                    return;
+                }
+
+                const team = await EquipeProvider.createTeam(listeCard, 1); // ← Niveau 1 par défaut
+                if (team) {
+                    alert("Équipe enregistrée avec succès !");
+                } else {
+                    alert("Erreur lors de l'enregistrement de l'équipe.");
+                }
             });
-        }, 100); // Petit délai pour s'assurer que le DOM est prêt
+        }, 100);
     }
 }

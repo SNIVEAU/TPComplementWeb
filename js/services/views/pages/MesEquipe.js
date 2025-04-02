@@ -35,11 +35,13 @@ export default class MesEquipe {
         } else {
             teams.forEach((team, index) => {
                 console.log("Équipe:", team.id)
+                const level = team.level || 1;
+
                 view += `
                     <div class="col-md-6 col-lg-4 mb-4">
                         <div class="card shadow-sm border-0">
-                            <div class="card-header bg-primary text-white text-center d-flex justify-content-between align-items-center">
-                                <span>Équipe ${index + 1}</span>
+                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <span>Équipe ${index + 1} - Niveau ${level}</span>
                                 <button class="btn btn-danger btn-sm" onclick="deleteTeam('${team.id}')">Supprimer</button>
                             </div>
                             <div class="card-body d-flex flex-wrap justify-content-center gap-2">
@@ -63,14 +65,11 @@ export default class MesEquipe {
                 `;
             });
         }
+
         view += `
                 </div>
                 <div class="text-center">
                     <a href="#/equipecreate" class="btn btn-primary">Créer une nouvelle équipe</a>
-                </div>
-            </div>
-        `;
-        view += `
                 </div>
             </div>
         `;
