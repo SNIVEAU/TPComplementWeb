@@ -7,6 +7,7 @@ export default class MesEquipe {
         let teams = await EquipeProvider.fetchAllTeam();
 
         window.deleteTeam = async function (id) {
+            console.log("Suppression de l'équipe avec l'ID :", id);
             const success = await EquipeProvider.deleteTeam(id);
             if (success) {
                 alert("Équipe supprimée avec succès !");
@@ -15,6 +16,7 @@ export default class MesEquipe {
                 alert("Erreur lors de la suppression de l'équipe.");
             }
         };
+        
         console.log("Équipes récupérées:", teams);
         const defaultImage = "https://static.wikia.nocookie.net/dbz-dokkanbattle/images/5/51/Card_3000270_thumb.png";
 
@@ -38,7 +40,7 @@ export default class MesEquipe {
                         <div class="card shadow-sm border-0">
                             <div class="card-header bg-primary text-white text-center d-flex justify-content-between align-items-center">
                                 <span>Équipe ${index + 1}</span>
-                                <button class="btn btn-danger btn-sm" onclick="deleteTeam(${team.id})">Supprimer</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteTeam('${team.id}')">Supprimer</button>
                             </div>
                             <div class="card-body d-flex flex-wrap justify-content-center gap-2">
                 `;
