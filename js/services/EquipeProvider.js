@@ -34,7 +34,7 @@ export default class EquipeProvider {
     
             const validCards = cards.filter(c => c !== null);
             const level = data.level || 1; 
-            return new Equipe(data.id, validCards, data.level ?? 1); // ← inclure le niveau
+            return new Equipe(data.id, validCards, data.level ?? 1); 
     
         } catch (error) {
             console.error("Erreur dans fetchTeamById :", error);
