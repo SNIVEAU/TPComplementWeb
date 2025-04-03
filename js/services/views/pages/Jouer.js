@@ -23,7 +23,7 @@ export default class Jouer {
             `;
         } else {
             teams.forEach((team, index) => {
-                const teamLevel = team.level ?? 1;
+                const teamLevel = team.getLevel();
                 view += `
                     <div class="card shadow-sm border-0 team-card" data-team-id="${team.id}" style="width: 18rem; cursor: pointer;">
                         <div class="card-header bg-primary text-white text-center team-header" data-team-id="${team.id}">
@@ -82,7 +82,7 @@ export default class Jouer {
                     selectedTeamContainer.innerHTML = `
                         <div class="card shadow-sm border-0 mx-auto" style="width: 18rem;">
                             <div class="card-header bg-success text-white">
-                                Équipe Sélectionnée - Niveau ${team.level ?? 1}
+                                Équipe Sélectionnée - Niveau ${team.getLevel()}
                             </div>
                             <div class="card-body d-flex flex-wrap justify-content-center gap-2">
                                 ${team.listpersonnage.map(p => `
@@ -100,13 +100,11 @@ export default class Jouer {
             if (!selectedTeam) return;
             const success = Math.random() < 0.5;
             if (success) {
-                const newLevel = (selectedTeam.level ?? 1) + 1;
-                await EquipeProvider.levelUpTeam(selectedTeam.id, newLevel);
-                const updatedTeam = await EquipeProvider.fetchTeamById(selectedTeam.id);
-                selectedTeam.level = updatedTeam.level; // mise à jour locale
-                document.getElementById(`level-${selectedTeam.id}`).textContent = updatedTeam.level;
-                selectedTeamContainer.querySelector('.card-header').textContent = `Équipe Sélectionnée - Niveau ${updatedTeam.level}`;
-                alert(`Félicitations ! L'équipe a gagné un niveau. Niveau actuel : ${updatedTeam.level}`);
+                selectedTeam.levelUp();
+                await EquipeProvider.levelUpTeam(selectedTeam.id, selectedTeam.getLevel());
+                document.getElementById(`level-${selectedTeam.id}`).textContent = selectedTeam.getLevel();
+                selectedTeamContainer.querySelector('.card-header').textContent = `Équipe Sélectionnée - Niveau ${selectedTeam.getLevel()}`;
+                alert(`Félicitations ! L'équipe a gagné un niveau. Niveau actuel : ${selectedTeam.getLevel()}`);
             } else {
                 alert(`Pas de chance... L'équipe n'a pas gagné de niveau cette fois.`);
             }
