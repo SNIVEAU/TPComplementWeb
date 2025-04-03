@@ -6,6 +6,8 @@ import addFavoris from "./services/AddFavoris.js";
 import FavoriCardAll from "./services/views/pages/FavoriCardAll.js";
 import Equipe from "./services/views/pages/Equipe.js";
 import MesEquipe from "./services/views/pages/MesEquipe.js";
+import Jouer from "./services/views/pages/Jouer.js";
+
 const routes = {
     '/': About,
     '/about': About,
@@ -14,6 +16,7 @@ const routes = {
     '/favoris': FavoriCardAll,
     '/equipe': MesEquipe,
     '/equipecreate': Equipe,
+    '/jouer': Jouer,
 };
 
 const router = async () => {
