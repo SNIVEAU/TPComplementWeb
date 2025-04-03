@@ -1,18 +1,25 @@
 const Utils = {
     parseRequestURL: () => {
         let url = location.hash.slice(1).toLowerCase() || '/';
-        let r = url.split("/");
+        let [path, queryString] = url.split("?");
+        let r = path.split("/");
+
         let request = {
-            resource: null,
-            id: null,
-            verb: null
+            resource: r[1] || null,
+            id: r[2] || null,
+            verb: r[3] || null,
+            query: {}
+        };
+
+        if (queryString) {
+            queryString.split("&").forEach(pair => {
+                const [key, value] = pair.split("=");
+                request.query[key] = decodeURIComponent(value);
+            });
         }
-        request.resource = r[1];
-        request.id = r[2];
-        request.verb = r[3];
-        console.log(request);
+
         return request;
     }
-}
+};
 
 export default Utils;
