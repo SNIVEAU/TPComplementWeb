@@ -33,7 +33,7 @@ export default class EquipeProvider {
             }));
     
             const validCards = cards.filter(c => c !== null);
-            const level = data.level || 1; // ← ajouter ceci
+            const level = data.level || 1; 
             return new Equipe(data.id, validCards, data.level ?? 1); // ← inclure le niveau
     
         } catch (error) {
